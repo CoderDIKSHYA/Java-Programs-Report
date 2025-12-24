@@ -1,0 +1,5 @@
+# Ignore Java compiled files
+*.class
+
+# Ignore EditPlus backup files
+*.bak
