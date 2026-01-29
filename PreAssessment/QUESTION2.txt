@@ -1,0 +1,225 @@
+OceanFleet – Collections Based Problem
+OceanFleet – Collections Based Problem
+Problem Overview
+OceanFleet Analytics is a marine research organization that tracks the performance of cargo vessels across different routes.
+The organization aims to improve operational efficiency by implementing a system that records vessel performance data, retrieves vessel details, and identifies high-performing vessels.
+
+As a software developer, you must implement a Java program to manage vessel performance records using collections.
+
+Component Specification: Vessel (Model Class)
+Type: Class
+Attributes
+String vesselId
+String vesselName
+double averageSpeed
+String vesselType
+Methods
+Getters and setters for all attributes
+No-argument constructor
+Four-argument constructor
+(All constructors and methods are provided in the code skeleton.)
+
+Component Specification: VesselUtil
+Type: Class
+Attribute
+private List<Vessel> vesselList
+Getter and setter methods for the attribute are provided in the code skeleton.
+
+Note: vesselList stores a list of Vessel objects containing vesselId, vesselName, vesselType, and averageSpeed.
+
+Requirement 1: Add Vessel Performance Details
+Method
+public void addVesselPerformance(Vessel vessel)
+Responsibility
+Adds a new Vessel object to the vesselList.
+Requirement 2: Retrieve Vessel Details by Vessel Id
+Method
+public Vessel getVesselById(String vesselId)
+Responsibility
+Searches for a vessel using vesselId (case-sensitive).
+Returns the corresponding Vessel object if found.
+Returns null if the vessel is not found.
+Requirement 3: Retrieve High Performance Vessels
+Method
+public List<Vessel> getHighPerformanceVessels()
+Responsibility
+Returns a list of vessels with the highest averageSpeed.
+If multiple vessels share the same highest speed, all must be included.
+Notes
+averageSpeed is measured in knots.
+Number of vessels is always a valid positive number.
+Follow object-oriented principles strictly.
+Use class names, method names, and attributes exactly as specified.
+Adhere to the provided code template.
+Use the hardcoded data as specified in the sample input.
+Sample Input / Output
+Input
+
+3
+V001:Sea King:25.5:Cargo
+V002:Ocean Star:18.0:Tanker
+V003:Wave Rider:22.3:Cruise
+V001
+Expected Output
+
+V001 | Sea King | Cargo | 25.5 knots
+High performance vessels are
+V001 | Sea King | Cargo | 25.5 knots
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution{
+    public static void main(String[] args) {
+
+        VesselUtil util = new VesselUtil();
+
+        // Hardcoded input
+        String[] inputs = {
+                "V001:Sea King:25.5:Cargo",
+                "V002:Ocean Star:18.0:Tanker",
+                "V003:Wave Rider:22.3:Cruise"
+        };
+
+        String searchId = "V001";
+
+        // Add vessel details
+        for (String input : inputs) {
+            String[] data = input.split(":");
+
+            Vessel vessel = new Vessel(
+                    data[0],
+                    data[1],
+                    Double.parseDouble(data[2]),
+                    data[3]
+            );
+
+            util.addVesselPerformance(vessel);
+        }
+
+        // Search vessel by ID
+        Vessel foundVessel = util.getVesselById(searchId);
+
+        if (foundVessel != null) {
+            System.out.println(foundVessel.getVesselId() + " | "
+                    + foundVessel.getVesselName() + " | "
+                    + foundVessel.getVesselType() + " | "
+                    + foundVessel.getAverageSpeed() + " knots");
+        } else {
+            System.out.println("Vessel Id " + searchId + " not found");
+        }
+
+        // Display high performance vessels
+        System.out.println("High performance vessels are");
+        List<Vessel> highPerformanceVessels = util.getHighPerformanceVessels();
+
+        for (Vessel vessel : highPerformanceVessels) {
+            System.out.println(vessel.getVesselId() + " | "
+                    + vessel.getVesselName() + " | "
+                    + vessel.getVesselType() + " | "
+                    + vessel.getAverageSpeed() + " knots");
+        }
+    }
+
+}
+
+class Vessel {
+
+    private String vesselId;
+    private String vesselName;
+    private double averageSpeed;
+    private String vesselType;
+
+    // No-argument constructor
+    public Vessel() {
+    }
+
+    // Four-argument constructor
+    public Vessel(String vesselId, String vesselName, double averageSpeed, String vesselType) {
+        this.vesselId = vesselId;
+        this.vesselName = vesselName;
+        this.averageSpeed = averageSpeed;
+        this.vesselType = vesselType;
+    }
+
+    // Getters and Setters
+    public String getVesselId() {
+        return vesselId;
+    }
+
+    public void setVesselId(String vesselId) {
+        this.vesselId = vesselId;
+    }
+
+    public String getVesselName() {
+        return vesselName;
+    }
+
+    public void setVesselName(String vesselName) {
+        this.vesselName = vesselName;
+    }
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(double averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public String getVesselType() {
+        return vesselType;
+    }
+
+    public void setVesselType(String vesselType) {
+        this.vesselType = vesselType;
+    }
+}
+
+
+
+class VesselUtil {
+
+    private List<Vessel> vesselList = new ArrayList<>();
+
+    public List<Vessel> getVesselList() {
+        return vesselList;
+    }
+
+    public void setVesselList(List<Vessel> vesselList) {
+        this.vesselList = vesselList;
+    }
+
+    // Requirement 1: Add vessel
+    public void addVesselPerformance(Vessel vessel) {
+       vesselList.add(vessel);
+    }
+
+    // Requirement 2: Get vessel by ID (case-sensitive)
+    public Vessel getVesselById(String vesselId) {
+        for(Vessel v:vesselList){
+            if(v.getVesselId().equals(vesselId))
+            return v;
+        }
+       return null;
+    }
+
+    // Requirement 3: Get high performance vessels
+    public List<Vessel> getHighPerformanceVessels() {
+       List<Vessel> res = new ArrayList();
+       double maxi=0.0;
+       for(Vessel v: vesselList)
+       {
+        if(v.getAverageSpeed()> maxi){
+            maxi=v.getAverageSpeed();
+        }
+       }
+       for(Vessel v:vesselList){
+        if(v.getAverageSpeed()==maxi){
+            res.add(v);
+        }
+       }
+    return res;
+    }
+}

@@ -1,0 +1,71 @@
+Write a Java method named processWords that accepts two string parameters:
+firstWord and secondWord.
+The method should perform the following operations in the given order:
+1. Invalid Word Validation
+If firstWord contains a space, return:
+Copy code
+
+firstWord is an invalid word
+If secondWord contains a space, return:
+Copy code
+
+secondWord is an invalid word
+2. Reverse and Compare
+Reverse firstWord.
+If the reversed firstWord matches secondWord (case-insensitive):
+Convert the reversed word to lowercase
+Replace all vowels (a, e, i, o, u) with @
+Return the resulting string
+3. Vowel and Consonant Analysis
+Concatenate firstWord and secondWord
+Convert the combined string to uppercase
+Count the number of vowels and consonants
+If the number of vowels and consonants is equal, return:
+Copy code
+
+Vowels and consonants are equal
+4. Result Formation
+If vowels are greater than consonants, extract unique vowels
+If consonants are greater than vowels, extract unique consonants
+Return only the first two unique characters based on the above condition
+Additional Requirement
+The parameters must be passed from the main(String[] args) method
+Print the returned result
+
+
+
+public class Solution{
+      public String processWords(String firstWord, String secondWord) {
+            if(firstWord.contains(" ")){
+                  return firstWord + "is an invalid word";
+            }
+                  if(secondWord.contains(" ")){
+                        return secondWord + "is an invalid word";
+                  }
+
+                        String rev = new StringBuilder(firstWord).reverse().toString();
+                        if(rev.equalsIgnoreCase(secondWord))
+                        return rev.toLowerCase().replaceAll("[aeiou]","@");
+                        String word = (firstWord + secondWord).toUpperCase();
+                        String vowels="AEIOU";
+                        int v=0,c=0;
+
+                        for(char ch : word.toCharArray())
+                        if(vowels.indexOf(ch)!= -1)v++; else c++;
+
+                        if(v == c)
+                        return "Vowels and consonants are equal";
+
+                        StringBuilder res = new StringBuilder();
+                        for(char ch:word.toCharArray()){
+                              if((v > c && vowels.indexOf(ch)!=-1)||
+                              (c>v && vowels.indexOf(ch)== -1)){
+                                    if(res.indexOf("" +ch)== -1)
+                              res.append(ch);
+                              
+                        }
+                        if(res.length() == 2)break;
+                  }
+                  return res.toString();
+            }
+            }
